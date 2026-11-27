@@ -87,7 +87,7 @@ export const getDestXcmFee = async <
     try {
       return await reverseFeeFor(asset, asset.amount)
     } catch (err: unknown) {
-      if (!(err instanceof InvalidCurrencyError) || !swapConfig) {
+      if (!swapConfig) {
         return 0n
       }
 
