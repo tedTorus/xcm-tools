@@ -1,0 +1,55 @@
+diff --git a/my_prs.txt b/my_prs.txt
+new file mode 100644
+index 00000000..d06afae6
+--- /dev/null
++++ b/my_prs.txt
+@@ -0,0 +1 @@
++[PR #2681] fix: correctly label destination fee with native asset instead of transferred asset
+diff --git a/my_real_prs.json b/my_real_prs.json
+new file mode 100644
+index 00000000..0cdbb416
+--- /dev/null
++++ b/my_real_prs.json
+@@ -0,0 +1 @@
++[{"number":2681,"title":"fix: correctly label destination fee with native asset instead of transferred asset"}]
+diff --git a/packages/sdk-core/src/chains/supported/Astar.ts b/packages/sdk-core/src/chains/supported/Astar.ts
+index d812614d..fbf1757b 100644
+--- a/packages/sdk-core/src/chains/supported/Astar.ts
++++ b/packages/sdk-core/src/chains/supported/Astar.ts
+@@ -5,7 +5,6 @@ import type { TParachain, TRelaychain } from '@paraspell/sdk-common'
+ import { deepEqual, Version } from '@paraspell/sdk-common'
+ 
+ import { RELAY_LOCATION } from '../../constants'
+-import { transferPolkadotXcm } from '../../pallets/polkadotXcm'
+ import type { TMintConfig, TTransferLocalOptions } from '../../types'
+ import { type IPolkadotXCMTransfer, type TPolkadotXCMTransferOptions } from '../../types'
+ import { assertHasId } from '../../utils'
+@@ -32,12 +31,6 @@ class Astar<TApi, TRes, TSigner, TCustomChain extends string = never>
+     return deepEqual(assetInfo.location, RELAY_LOCATION)
+   }
+ 
+-  transferPolkadotXCM(
+-    input: TPolkadotXCMTransferOptions<TApi, TRes, TSigner, TCustomChain>
+-  ): Promise<TRes> {
+-    return transferPolkadotXcm(input, 'reserve_transfer_assets')
+-  }
+-
+   isRelayToParaEnabled(): boolean {
+     return false
+   }
+diff --git a/pr_2673.md b/pr_2673.md
+new file mode 100644
+index 00000000..e59268eb
+--- /dev/null
++++ b/pr_2673.md
+@@ -0,0 +1,7 @@
++Fixes #2673
++
++### Description
++In `buildOriginInfo`, `selectedCurrency.balanceAfter` was calculated simply as `balance - assetAmount`, completely ignoring the origin fee. When the fee is paid in the same asset being transferred, this resulted in an artificially inflated `balanceAfter`. Consequently, `sufficient` could evaluate to `true` even when the real remaining balance dipped below the existential deposit (ED), leading to failed transactions or account reaping.
++
++### Solution
++Updated `buildSelectedCurrency` to dynamically determine if the current asset is the fee asset (checking against `originFeeAsset` or resolving the native asset if `isOriginFeeAsset` is false). If it matches, the `originFee` is correctly subtracted from `balanceAfter`. This ensures the ED check (`sufficient`) is evaluated against the true remaining balance.
+diff --git a/pr_2673_url.txt b/pr_2673_url.txt
+new file mode 100644
+index 00000000..e69de29b

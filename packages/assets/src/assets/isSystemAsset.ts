@@ -9,6 +9,7 @@ export const isSystemAsset = (asset: TAssetInfo) =>
 
 export const isBridgedSystemAsset = (asset: TAssetInfo, relayChains: readonly TRelaychain[]) =>
   asset.location.parents === Parents.TWO &&
+  'X1' in asset.location.interior &&
   relayChains.some(relayChain =>
     deepEqual(getJunctionValue(asset.location, 'GlobalConsensus'), {
       [relayChain.toLowerCase()]: null
