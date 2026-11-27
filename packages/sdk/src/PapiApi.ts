@@ -952,8 +952,11 @@ class PapiApi<TCustomChain extends string = never> extends PolkadotApi<
 
   async signAndSubmit(tx: TPapiTransaction, sender: TSender<TPapiSigner>): Promise<string> {
     const signer = isSenderSigner(sender) ? sender : createDevSigner(sender)
-    const { txHash } = await tx.createAndSubmit(signer)
-    return txHash
+    const result = await tx.createAndSubmit(signer)
+    if (!result.ok) {
+      throw new SubmitTransactionError(JSON.stringify(result.dispatchError))
+    }
+    return result.txHash
   }
 
   async signAndSubmitFinalized(
