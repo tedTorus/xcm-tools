@@ -80,7 +80,8 @@ export const findAssetInfoBySymbol = <TCustomChain extends string = never>(
       let otherAssetsMatches: TAssetInfo[]
 
       if (destination && isExternalChain(destination)) {
-        return findEthMatch(value, otherAssets)
+        const ethMatch = findEthMatch(value, otherAssets)
+        if (ethMatch) return ethMatch
       }
 
       if (lowerSymbol.endsWith('.e')) {
@@ -130,7 +131,8 @@ export const findAssetInfoBySymbol = <TCustomChain extends string = never>(
     let nativeAssetsMatches: TAssetInfo[]
 
     if (destination && isExternalChain(destination)) {
-      return findEthMatch(symbol, otherAssets)
+      const ethMatch = findEthMatch(symbol, otherAssets)
+      if (ethMatch) return ethMatch
     }
 
     if (lowerSymbol.endsWith('.e')) {
