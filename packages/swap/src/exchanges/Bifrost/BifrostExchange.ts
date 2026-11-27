@@ -49,7 +49,7 @@ class BifrostExchange extends ExchangeChain<'PJS'> {
       amountWithoutFee,
     );
 
-    const allowedSlippage = new Percent(Number(slippagePct) * 100, 10_000);
+    const allowedSlippage = new Percent(Number(slippagePct ?? 1) * 100, 10_000);
 
     const blockNumber = await apiPjs.derive.chain.bestNumber();
 

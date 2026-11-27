@@ -80,7 +80,7 @@ class HydrationExchange extends ExchangeChain<'PAPI'> {
       const substrateTx = await txBuilderFactory
         .trade(trade)
         .withSlippage(Number(slippagePct))
-        .withBeneficiary(sender)
+        .withBeneficiary(recipient)
         .build();
 
       const tx = substrateTx.get();
