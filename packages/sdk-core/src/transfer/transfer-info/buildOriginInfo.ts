@@ -28,7 +28,11 @@ export const buildOriginInfo = async <TApi, TRes, TSigner, TCustomChain extends 
       asset
     })
 
-    const balanceAfter = balance - assetAmount
+    const isFeeAsset = isOriginFeeAsset
+      ? originFeeAsset && asset.symbol === originFeeAsset.symbol
+      : asset.symbol === api.findNativeAssetInfo(origin)?.symbol;
+    const feeToSubtract = isFeeAsset ? (originFee ?? 0n) : 0n;
+    const balanceAfter = balance - assetAmount - feeToSubtract
 
     return {
       sufficient: balanceAfter >= BigInt(asset.existentialDeposit),
