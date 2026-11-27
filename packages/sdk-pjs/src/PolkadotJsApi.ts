@@ -695,7 +695,7 @@ class PolkadotJsApi<TCustomChain extends string = never> extends PolkadotApi<
     const forwardedXcms =
       resultJson.ok.forwardedXcms.length > 0 ? resultJson.ok.forwardedXcms[0] : []
 
-    const actualWeight = resultJson.ok.executionResult.used
+    const actualWeight = resultJson.ok.executionResult.complete?.used ?? resultJson.ok.executionResult.used
 
     const weight: TWeight | undefined = actualWeight
       ? {
