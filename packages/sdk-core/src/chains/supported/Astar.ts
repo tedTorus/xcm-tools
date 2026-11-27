@@ -5,7 +5,6 @@ import type { TParachain, TRelaychain } from '@paraspell/sdk-common'
 import { deepEqual, Version } from '@paraspell/sdk-common'
 
 import { RELAY_LOCATION } from '../../constants'
-import { transferPolkadotXcm } from '../../pallets/polkadotXcm'
 import type { TMintConfig, TTransferLocalOptions } from '../../types'
 import { type IPolkadotXCMTransfer, type TPolkadotXCMTransferOptions } from '../../types'
 import { assertHasId } from '../../utils'
@@ -30,12 +29,6 @@ class Astar<TApi, TRes, TSigner, TCustomChain extends string = never>
 
   isSendingTempDisabled(assetInfo: TAssetInfo): boolean {
     return deepEqual(assetInfo.location, RELAY_LOCATION)
-  }
-
-  transferPolkadotXCM(
-    input: TPolkadotXCMTransferOptions<TApi, TRes, TSigner, TCustomChain>
-  ): Promise<TRes> {
-    return transferPolkadotXcm(input, 'reserve_transfer_assets')
   }
 
   isRelayToParaEnabled(): boolean {

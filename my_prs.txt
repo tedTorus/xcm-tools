@@ -1,0 +1,1 @@
+[PR #2681] fix: correctly label destination fee with native asset instead of transferred asset
