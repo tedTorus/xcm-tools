@@ -8,7 +8,7 @@ import {
 } from '@paraspell/sdk-core'
 
 export const getLocationTokenId = (location: TLocation, chain: TSubstrateChain): string | null => {
-  if (location.interior === 'Here') {
+  if (location.parents === 0 && location.interior === 'Here') {
     // native token
     return getNativeAssetSymbol(chain)
   }

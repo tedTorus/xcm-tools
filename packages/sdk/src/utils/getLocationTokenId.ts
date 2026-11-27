@@ -4,7 +4,7 @@
 import { getNativeAssetSymbol, getOtherAssets, type TSubstrateChain } from '@paraspell/sdk-core'
 
 export const getLocationTokenId = (location: any, chain: TSubstrateChain): string | null => {
-  if (location.interior.type === 'Here') {
+  if (location.parents === 0 && location.interior.type === 'Here') {
     // native token
     return getNativeAssetSymbol(chain)
   }
